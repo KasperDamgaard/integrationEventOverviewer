@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverviewerTests", "OverviewerTests\OverviewerTests.csproj", "{6EA4E143-D4DC-40AC-BB7B-8EDA830BF864}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationEventOverviewer", "IntegrationEventOverviewer\IntegrationEventOverviewer.csproj", "{3DA77009-06A5-4E43-B7A9-5B800331489A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D594FD0-7EED-4F36-B7E8-1BACF2434408}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D594FD0-7EED-4F36-B7E8-1BACF2434408}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D594FD0-7EED-4F36-B7E8-1BACF2434408}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D594FD0-7EED-4F36-B7E8-1BACF2434408}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EA4E143-D4DC-40AC-BB7B-8EDA830BF864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EA4E143-D4DC-40AC-BB7B-8EDA830BF864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EA4E143-D4DC-40AC-BB7B-8EDA830BF864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EA4E143-D4DC-40AC-BB7B-8EDA830BF864}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DA77009-06A5-4E43-B7A9-5B800331489A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DA77009-06A5-4E43-B7A9-5B800331489A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DA77009-06A5-4E43-B7A9-5B800331489A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DA77009-06A5-4E43-B7A9-5B800331489A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
