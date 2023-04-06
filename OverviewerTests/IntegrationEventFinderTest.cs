@@ -1,33 +1,35 @@
-using System.Runtime.CompilerServices;
 using IntegrationEventOverviewer;
 using Shouldly;
 
 namespace OverviewerTests;
 
-public class IntegrationEventFinderTests
+public class IntegrationEventFinderTests : TestBase
 {
-    [SetUp]
-    public void Setup()
-    {
-    }
 
     [Test]
-    public async Task Test1()
+    public async Task TestIntegrationEventFinder()
     {
         // Arrange
         var sut = new IntegrationEventFinder();
-        var path = GetThisFilePath();
-        var directory = Directory.GetParent(Path.GetDirectoryName(path)!)!.FullName;
-        
+
         // Act
-        var result = await sut.FindIntegrationEventImplementors(directory + Path.DirectorySeparatorChar + "IntegrationEventOverviewer.sln");
+        var result = await sut.FindIntegrationEvents(Projects);
         
         // Assert
-        result.ShouldContain(e => e.Identifier.Text == nameof(IntegrationEventTestImplementor));
+        result.ShouldContain(e => e.Name == nameof(IntegrationEventTestImplementor));
     }
 
-    private static string GetThisFilePath([CallerFilePath] string path = null!)
+    [Test]
+    public async Task TestProgram()
     {
-        return path;
+        // Write a test for Program using arrange, act, assert
+        // Arrange
+        var args = new [] {"-s", GetThisSolutionFilePath()};
+        
+        // Act
+        await Program.Main(args);
+        
+        // Assert
+        // Assert.Pass();
     }
 }
