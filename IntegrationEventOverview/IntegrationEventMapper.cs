@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.CodeAnalysis;
 
-namespace IntegrationEventOverviewer;
+namespace IntegrationEventOverview;
 
 public class IntegrationEventMapper : IIntegrationEventMapper 
 {

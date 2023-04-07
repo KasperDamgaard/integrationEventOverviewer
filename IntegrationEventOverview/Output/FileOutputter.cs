@@ -1,20 +1,18 @@
-﻿using IntegrationEventOverviewer.Visualization;
+﻿using IntegrationEventOverview.Visualization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace IntegrationEventOverviewer.Output;
+namespace IntegrationEventOverview.Output;
 
 public class FileOutputter : IOverviewOutputter
 {
     private readonly ILogger<FileOutputter> _logger;
     private readonly string _filePath;
 
-    public FileOutputter(ILogger<FileOutputter> logger, IOptions<Options> options)
+    public FileOutputter(ILogger<FileOutputter> logger, IOptions<SolutionOptions> options)
     {
         _logger = logger;
-        var solutionPath = options.Value.SolutionPath!;
-        var solutionName = solutionPath[(solutionPath.LastIndexOf('/')+1)..^".sln".Length];
-        _filePath = Path.Combine(Directory.GetCurrentDirectory(), solutionName + "-integrationEventMapping.puml");
+        _filePath = Path.Combine(Directory.GetCurrentDirectory(), options.Value.SolutionName + "-integrationEventMapping.puml");
     }
 
     public async Task Output(VisualizationOutput content)

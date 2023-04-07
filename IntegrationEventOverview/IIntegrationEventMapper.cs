@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
 
-namespace IntegrationEventOverviewer;
+namespace IntegrationEventOverview;
 
 public record HandlerClassInformation(string Name, Namespace Namespace);
 

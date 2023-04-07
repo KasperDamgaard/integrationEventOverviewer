@@ -1,4 +1,4 @@
-﻿namespace IntegrationEventOverviewer;
+﻿namespace IntegrationEventOverview;
 
 public interface IIntegrationEvent : IDomainEvent
 {

@@ -1,4 +1,4 @@
-﻿using IntegrationEventOverviewer;
+﻿using IntegrationEventOverview;
 using MediatR;
 
 namespace OverviewerTests;

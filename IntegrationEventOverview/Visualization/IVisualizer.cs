@@ -1,4 +1,4 @@
-﻿namespace IntegrationEventOverviewer.Visualization;
+﻿namespace IntegrationEventOverview.Visualization;
 
 public record VisualizationOutput(string Output);
 

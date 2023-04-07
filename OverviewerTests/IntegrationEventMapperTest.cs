@@ -1,4 +1,4 @@
-﻿using IntegrationEventOverviewer;
+﻿using IntegrationEventOverview;
 using Shouldly;
 
 namespace OverviewerTests;

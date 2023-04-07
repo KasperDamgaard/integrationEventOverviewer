@@ -1,5 +1,5 @@
-﻿using IntegrationEventOverviewer.Output;
-using IntegrationEventOverviewer.Visualization;
+﻿using IntegrationEventOverview.Output;
+using IntegrationEventOverview.Visualization;
 
 namespace OverviewerTests;
 

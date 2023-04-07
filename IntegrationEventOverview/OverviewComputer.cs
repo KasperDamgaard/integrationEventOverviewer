@@ -1,9 +1,9 @@
-﻿using IntegrationEventOverviewer.Output;
-using IntegrationEventOverviewer.Visualization;
+﻿using IntegrationEventOverview.Output;
+using IntegrationEventOverview.Visualization;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 
-namespace IntegrationEventOverviewer;
+namespace IntegrationEventOverview;
 
 public class OverviewComputer
 {
@@ -22,10 +22,10 @@ public class OverviewComputer
         _outputter = outputter;
     }
 
-    public async Task<VisualizationOutput> ComputeOverview(Options options)
+    public async Task<VisualizationOutput> ComputeOverview(CliOptions cliOptions)
     {
         _logger.LogInformation("Creating Integration Event mapping");
-        var projects = await SyntaxHelper.GetProjects(options.SolutionPath!);
+        var projects = await SyntaxHelper.GetProjects(cliOptions.SolutionPath!);
         var integrationEventToHandlers = await CreateIntegrationEventMapping(projects.ToList());
         _logger.LogInformation("Completed successfully - output can be found in integrationEventMapping.txt");
         var content = _visualizer.Visualize(integrationEventToHandlers);
@@ -34,7 +34,7 @@ public class OverviewComputer
         return content;
     }
 
-    private async Task<Dictionary<IntegrationEventClassInformation, IEnumerable<HandlerClassInformation>>> CreateIntegrationEventMapping(IList<Project> projects)
+    public async Task<Dictionary<IntegrationEventClassInformation, IEnumerable<HandlerClassInformation>>> CreateIntegrationEventMapping(IList<Project> projects)
     {
         _logger.LogInformation("Find all Integration Events");
         var integrationEvents = (await _eventFinder.FindIntegrationEvents(projects)).ToList();

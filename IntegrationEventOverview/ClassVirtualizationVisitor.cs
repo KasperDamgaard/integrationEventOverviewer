@@ -2,7 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace IntegrationEventOverviewer;
+namespace IntegrationEventOverview;
 
 public class ClassVirtualizationVisitor : CSharpSyntaxRewriter
 {

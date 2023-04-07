@@ -1,16 +1,24 @@
 ﻿using System.Text;
+using Microsoft.Extensions.Options;
 
-namespace IntegrationEventOverviewer.Visualization;
+namespace IntegrationEventOverview.Visualization;
 
 public class PumlVisualizer : IVisualizer
 {
+    private readonly SolutionOptions _solutionOptions;
+
+    public PumlVisualizer(IOptions<SolutionOptions> options)
+    { 
+        _solutionOptions = options.Value;
+    }
+
     public VisualizationOutput Visualize(Dictionary<IntegrationEventClassInformation, IEnumerable<HandlerClassInformation>> integrationEventToHandlers)
     {
         var sb = new StringBuilder();
         sb.AppendLine("@startuml");
         sb.AppendLine("!theme spacelab");
         sb.AppendLine("skin rose");
-        sb.AppendLine("title Integration Event Overview");
+        sb.AppendLine($"title {_solutionOptions.SolutionName} Integration Event Overview");
         OrganizeByNamespace(integrationEventToHandlers).ToList().ForEach(x =>
         {
             sb.AppendLine("namespace " + x.Key.Name + "{");

@@ -2,7 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.MSBuild;
 
-namespace IntegrationEventOverviewer;
+namespace IntegrationEventOverview;
 
 public static class SyntaxHelper
 {
@@ -18,6 +18,6 @@ public static class SyntaxHelper
 
         var workspace = MSBuildWorkspace.Create();
         var solution = await workspace.OpenSolutionAsync(pathToSolution);
-        return solution.Projects.Where(p => p.Name.EndsWith("Tests", StringComparison.InvariantCultureIgnoreCase)).ToList();
+        return solution.Projects.Where(p => !p.Name.EndsWith("Tests", StringComparison.InvariantCultureIgnoreCase)).ToList();
     }
 }

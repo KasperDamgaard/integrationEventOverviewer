@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace IntegrationEventOverviewer;
+namespace IntegrationEventOverview;
 
 public interface IDomainEvent : INotification
 {

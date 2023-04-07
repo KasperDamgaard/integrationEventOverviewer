@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace IntegrationEventOverviewer;
+namespace IntegrationEventOverview;
 
 public record IntegrationEventClassInformation(string Name, Namespace Namespace);
 

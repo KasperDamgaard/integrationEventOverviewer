@@ -1,6 +1,7 @@
-using IntegrationEventOverviewer;
-using IntegrationEventOverviewer.Visualization;
+using IntegrationEventOverview;
+using IntegrationEventOverview.Visualization;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Shouldly;
 
 namespace OverviewerTests;
@@ -25,18 +26,20 @@ public class IntegrationEventFinderTests : TestBase
     public async Task TestOverviewComputer()
     {
         // Arrange
-        var options = new Options {SolutionPath = GetThisSolutionFilePath()};
-        var sut = new OverviewComputer(LoggerFactory.CreateLogger<OverviewComputer>(), new PumlVisualizer(), new IntegrationEventFinder(), new IntegrationEventMapper(), new MockOutputter());
+        var options = new SolutionOptions(GetThisSolutionFilePath());
+        var visualizer = new PumlVisualizer(Options.Create(options));
+        var sut = new OverviewComputer(LoggerFactory.CreateLogger<OverviewComputer>(), visualizer, new IntegrationEventFinder(), new IntegrationEventMapper(), new MockOutputter());
         
         // Act
-        var overview = await sut.ComputeOverview(options);
+        var overview = await sut.CreateIntegrationEventMapping(Projects);
+        var visualization = visualizer.Visualize(overview);
         
         // Assert
-        overview.Output.ShouldBe("""
+        visualization.Output.ShouldBe("""
 @startuml
 !theme spacelab
 skin rose
-title Integration Event Overview
+title IntegrationEventOverview Integration Event Overview
 namespace OverviewerTests{
 class WrongIntegrationEventTestImplementor{}
 class WrongIntegrationEventHandler{}

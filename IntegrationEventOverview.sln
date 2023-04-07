@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverviewerTests", "OverviewerTests\OverviewerTests.csproj", "{6EA4E143-D4DC-40AC-BB7B-8EDA830BF864}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationEventOverviewer", "IntegrationEventOverviewer\IntegrationEventOverviewer.csproj", "{3DA77009-06A5-4E43-B7A9-5B800331489A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationEventOverview", "IntegrationEventOverview\IntegrationEventOverview.csproj", "{3DA77009-06A5-4E43-B7A9-5B800331489A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
