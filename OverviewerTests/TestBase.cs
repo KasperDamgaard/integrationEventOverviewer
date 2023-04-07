@@ -2,12 +2,14 @@
 using IntegrationEventOverviewer;
 using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.Logging;
 
 namespace OverviewerTests;
 
-public class TestBase
+public abstract class TestBase
 {
-    protected IEnumerable<Project> Projects { get; set; } = new List<Project>();
+    protected IEnumerable<Project> Projects { get; private set; } = new List<Project>();
+    protected readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(b => b.AddSimpleConsole(o => o.IncludeScopes = true));
 
     [SetUp]
     public async Task Setup()
@@ -30,6 +32,6 @@ public class TestBase
 
     private static Task<IEnumerable<Project>> GetProjects()
     {
-        return Program.GetProjects(GetThisSolutionFilePath());
+        return SyntaxHelper.GetProjects(GetThisSolutionFilePath());
     }
 }

@@ -42,7 +42,7 @@ public class ClassVirtualizationVisitor : CSharpSyntaxRewriter
         var sModel = _compilation.GetSemanticModel(classDeclarationSyntax.SyntaxTree);
         var classSymbol = sModel.GetDeclaredSymbol(classDeclarationSyntax);
         // Only find classes that can be instantiated
-        if (classSymbol != null && (classSymbol.IsAbstract || classSymbol.IsSealed))
+        if (classSymbol is {IsAbstract: true})
         {
             return false;
         }

@@ -1,19 +1,13 @@
 ﻿using System.Text;
 
-namespace IntegrationEventOverviewer;
-
-public interface IVisualizer
-{
-    public string Visualize(Dictionary<IntegrationEventClassInformation, IEnumerable<HandlerClassInformation>> integrationEventToHandlers);
-}
+namespace IntegrationEventOverviewer.Visualization;
 
 public class PumlVisualizer : IVisualizer
 {
-    public string Visualize(Dictionary<IntegrationEventClassInformation, IEnumerable<HandlerClassInformation>> integrationEventToHandlers)
+    public VisualizationOutput Visualize(Dictionary<IntegrationEventClassInformation, IEnumerable<HandlerClassInformation>> integrationEventToHandlers)
     {
         var sb = new StringBuilder();
         sb.AppendLine("@startuml");
-        sb.AppendLine("skinparam classAttributeFontSize 10");
         sb.AppendLine("!theme spacelab");
         sb.AppendLine("skin rose");
         sb.AppendLine("title Integration Event Overview");
@@ -26,10 +20,6 @@ public class PumlVisualizer : IVisualizer
             });
             foreach (var (intEvents, handlers) in integrationEventToHandlers)
             {
-                if (intEvents.Namespace.Name != x.Key.Name)
-                {
-                    continue;
-                }
                 foreach (var handler in handlers)
                 {
                     if (handler.Namespace.Name != x.Key.Name)
@@ -43,7 +33,7 @@ public class PumlVisualizer : IVisualizer
         });
 
         sb.AppendLine("@enduml");
-        return sb.ToString();
+        return new VisualizationOutput(sb.ToString());
     }
 
     private static Dictionary<Namespace, IList<ClassInformation>> OrganizeByNamespace(Dictionary<IntegrationEventClassInformation, IEnumerable<HandlerClassInformation>> integrationEventToHandlers)
@@ -53,22 +43,22 @@ public class PumlVisualizer : IVisualizer
         {
             if (namespaceToClass.TryGetValue(intEv.Namespace, out var value))
             {
-                value.Add(new ClassInformation(intEv.Name, intEv.Namespace));
+                value.Add(new ClassInformation(intEv.Name));
             }
             else
             {
-                namespaceToClass.Add(intEv.Namespace, new List<ClassInformation> {new(intEv.Name, intEv.Namespace)});
+                namespaceToClass.Add(intEv.Namespace, new List<ClassInformation> {new(intEv.Name)});
             }
 
             foreach (var handler in handlers)
             {
                 if (namespaceToClass.TryGetValue(handler.Namespace, out value))
                 {
-                    value.Add(new ClassInformation(handler.Name, handler.Namespace));
+                    value.Add(new ClassInformation(handler.Name));
                 }
                 else
                 {
-                    namespaceToClass.Add(handler.Namespace, new List<ClassInformation> {new(handler.Name, handler.Namespace)});
+                    namespaceToClass.Add(handler.Namespace, new List<ClassInformation> {new(handler.Name)});
                 }
             }
         }
@@ -76,3 +66,5 @@ public class PumlVisualizer : IVisualizer
         return namespaceToClass;
     }
 }
+
+internal record ClassInformation(string Name);

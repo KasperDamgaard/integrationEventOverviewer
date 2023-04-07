@@ -27,7 +27,6 @@ public class IntegrationEventMapper : IIntegrationEventMapper
                 return symbol.BaseType?.Name == nameof(INotificationHandler<IIntegrationEvent>) && symbol.BaseType?.TypeArguments[0].Name == integrationEvent.Name;
             });
 
-            // TODO: KLD: 2021-09-01: This is a blocking call, we should make it async
             var handlers = (await classVisitor.LocateInterfaces()).Select(ev =>
             {
                 var ns = SyntaxHelper.GetNamespaceFrom(ev);

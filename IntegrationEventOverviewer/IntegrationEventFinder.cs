@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace IntegrationEventOverviewer;
 
@@ -23,8 +22,6 @@ public class IntegrationEventFinder : IIntegrationEventFinder
                 return implementedInterfaces.Any(symbol => symbol.Name == nameof(IIntegrationEvent) && symbol.AllInterfaces.Any(s => s.Name == nameof(INotification)));
             });
 
-            // TODO: KLD: 2021-09-01: This is a blocking call, we should make it async
-            
             integrationEvents.AddRange((await classVisitor.LocateInterfaces()).Select(ev =>
             {
                 var ns = SyntaxHelper.GetNamespaceFrom(ev);
