@@ -4,6 +4,7 @@ using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace OverviewerTests;
 
@@ -11,6 +12,8 @@ public abstract class TestBase
 {
     protected IList<Project> Projects { get; private set; } = new List<Project>();
     protected readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(b => b.AddSimpleConsole(o => o.IncludeScopes = true));
+
+    protected IOptions<SolutionOptions> EmptyOptions => Options.Create(new SolutionOptions());
 
     [SetUp]
     public async Task Setup()

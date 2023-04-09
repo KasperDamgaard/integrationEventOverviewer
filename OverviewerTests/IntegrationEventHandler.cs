@@ -1,7 +1,14 @@
-﻿using IntegrationEventOverview;
-using MediatR;
+﻿using MediatR;
 
 namespace OverviewerTests;
+
+public class IntegrationEventListener : BuildingBlocks.IIntegrationEventListener<IntegrationEventTestImplementor2>
+{
+    public Task Handle(IntegrationEventTestImplementor2 notification, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+}
 
 public class IntegrationEventHandler : INotificationHandler<IntegrationEventTestImplementor>
 {
@@ -11,7 +18,7 @@ public class IntegrationEventHandler : INotificationHandler<IntegrationEventTest
     }
 }
 
-public class WrongIntegrationEventTestImplementor : IIntegrationEvent
+public class WrongIntegrationEventTestImplementor : IntegrationEventOverview.IIntegrationEvent
 {
     
 }

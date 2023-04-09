@@ -40,8 +40,8 @@ public class Program
                 
                 services.AddTransient<OverviewComputer>();
                 services.AddTransient<IVisualizer, PumlVisualizer>();
-                services.AddTransient<IIntegrationEventFinder, IntegrationEventFinder>();
-                services.AddTransient<IIntegrationEventMapper, IntegrationEventMapper>();
+                services.AddTransient<IEventFinder, EventFinder>();
+                services.AddTransient<IEventMapper, EventMapper>();
                 
                 switch (options.OutputType.ToLower())
                 {
@@ -58,6 +58,9 @@ public class Program
                 services.Configure<SolutionOptions>(o =>
                 {
                     o.SolutionPath = options.SolutionPath!;
+                    o.IntegrationEventInterfaceName = options.IntegrationEventInterfaceName;
+                    o.IntegrationEventHandlerInterfaceName = options.IntegrationEventHandlerInterfaceName;
+                    o.DomainEventOverview = options.DomainEventOverview;
                 });
             })
             .ConfigureLogging((_, logging) => 
@@ -77,4 +80,12 @@ public class CliOptions
 
     [Option('t', "output-type", Required = false, Default = "File", HelpText = "The output type (File or Console)")]
     public string OutputType { get; set; } = "File";
+    
+    [Option('h', "handler-name", Required = false, HelpText = "The name of the interface which handles the Integration Event")]
+    public string? IntegrationEventHandlerInterfaceName { get; set; }
+    
+    [Option('i', "integration-event-name", Required = false, HelpText = "The name of the Integration Event interface class")]
+    public string? IntegrationEventInterfaceName { get; set; }
+    [Option('d', "domain-events", Required = false, HelpText = "If set, the output will be the domain events instead of the integration events")]
+    public bool DomainEventOverview { get; set; }
 }

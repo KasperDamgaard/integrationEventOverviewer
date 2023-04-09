@@ -13,10 +13,10 @@ public class IntegrationEventFinderTests : TestBase
     public async Task TestIntegrationEventFinder()
     {
         // Arrange
-        var sut = new IntegrationEventFinder();
+        var sut = new EventFinder(Options.Create(new SolutionOptions()));
 
         // Act
-        var result = await sut.FindIntegrationEvents(Projects);
+        var result = await sut.FindEvents(Projects, false);
         
         // Assert
         result.ShouldContain(e => e.Name == nameof(IntegrationEventTestImplementor));
@@ -26,13 +26,13 @@ public class IntegrationEventFinderTests : TestBase
     public async Task TestOverviewComputer()
     {
         // Arrange
-        var options = new SolutionOptions(GetThisSolutionFilePath());
-        var visualizer = new PumlVisualizer(Options.Create(options));
-        var sut = new OverviewComputer(LoggerFactory.CreateLogger<OverviewComputer>(), visualizer, new IntegrationEventFinder(), new IntegrationEventMapper(), new MockOutputter());
+        var options = Options.Create(new SolutionOptions(GetThisSolutionFilePath()));
+        var visualizer = new PumlVisualizer(options);
+        var sut = new OverviewComputer(LoggerFactory.CreateLogger<OverviewComputer>(), visualizer, new EventFinder(options), new EventMapper(options), new MockOutputter(), options);
         
         // Act
         var overview = await sut.CreateIntegrationEventMapping(Projects);
-        var visualization = visualizer.Visualize(overview);
+        var visualization = visualizer.Visualize(overview, false);
         
         // Assert
         visualization.Output.ShouldBe("""
@@ -45,8 +45,11 @@ class WrongIntegrationEventTestImplementor{}
 class WrongIntegrationEventHandler{}
 class IntegrationEventTestImplementor{}
 class IntegrationEventHandler{}
+class IntegrationEventTestImplementor2{}
+class IntegrationEventListener{}
 WrongIntegrationEventTestImplementor <-- WrongIntegrationEventHandler : Handles
 IntegrationEventTestImplementor <-- IntegrationEventHandler : Handles
+IntegrationEventTestImplementor2 <-- IntegrationEventListener : Handles
 }
 @enduml
 

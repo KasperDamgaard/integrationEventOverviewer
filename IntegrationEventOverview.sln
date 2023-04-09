@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverviewerTests", "Overview
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationEventOverview", "IntegrationEventOverview\IntegrationEventOverview.csproj", "{3DA77009-06A5-4E43-B7A9-5B800331489A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks", "BuildingBlocks\BuildingBlocks.csproj", "{B2675914-E2AB-4507-9F70-F12B0E862B74}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,5 +24,9 @@ Global
 		{3DA77009-06A5-4E43-B7A9-5B800331489A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DA77009-06A5-4E43-B7A9-5B800331489A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DA77009-06A5-4E43-B7A9-5B800331489A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2675914-E2AB-4507-9F70-F12B0E862B74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2675914-E2AB-4507-9F70-F12B0E862B74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2675914-E2AB-4507-9F70-F12B0E862B74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2675914-E2AB-4507-9F70-F12B0E862B74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

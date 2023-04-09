@@ -1,5 +1,13 @@
-# Integration Event Overview Generator
-This project is a tool to generate an overview of all integration events in a given solution. 
+# Event Overview Generator
+This project is a tool to generate an overview of all integration and/or Domain events in a given solution. 
+
+## Conventions
+The tool will by default only generate an overview for integration events that are defined in a class that implements an interface named `IIntegrationEvent` which in turn should inherit the MediatR (https://github.com/jbogard/MediatR) `INotification` interface.
+Options exist to specify the name of the interface the program should look for. 
+
+If the option `-d true` is specified, the tool will generate an overview for Domain events instead. Here, the convention is that classes should implement the interface named `IDomainEvent` which in turn should inherit the MediatR `INotification` interface.
+
+Event handlers are expected to implement the MediatR `INotificationHandler<T>` interface where `T` is the event type.
 
 ## Usage
 1. Clone the Repository and build the project.

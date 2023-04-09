@@ -12,13 +12,14 @@ public class PumlVisualizer : IVisualizer
         _solutionOptions = options.Value;
     }
 
-    public VisualizationOutput Visualize(Dictionary<IntegrationEventClassInformation, IEnumerable<HandlerClassInformation>> integrationEventToHandlers)
+    public VisualizationOutput Visualize(Dictionary<EventClassInformation, IEnumerable<HandlerClassInformation>> integrationEventToHandlers, bool domainEventOverview)
     {
+        var eventText = domainEventOverview ? "Domain" : "Integration";
         var sb = new StringBuilder();
         sb.AppendLine("@startuml");
         sb.AppendLine("!theme spacelab");
         sb.AppendLine("skin rose");
-        sb.AppendLine($"title {_solutionOptions.SolutionName} Integration Event Overview");
+        sb.AppendLine($"title {_solutionOptions.SolutionName} {eventText} Event Overview");
         OrganizeByNamespace(integrationEventToHandlers).ToList().ForEach(x =>
         {
             sb.AppendLine("namespace " + x.Key.Name + "{");
@@ -44,7 +45,7 @@ public class PumlVisualizer : IVisualizer
         return new VisualizationOutput(sb.ToString());
     }
 
-    private static Dictionary<Namespace, IList<ClassInformation>> OrganizeByNamespace(Dictionary<IntegrationEventClassInformation, IEnumerable<HandlerClassInformation>> integrationEventToHandlers)
+    private static Dictionary<Namespace, IList<ClassInformation>> OrganizeByNamespace(Dictionary<EventClassInformation, IEnumerable<HandlerClassInformation>> integrationEventToHandlers)
     {
         var namespaceToClass = new Dictionary<Namespace, IList<ClassInformation>>();
         foreach (var (intEv, handlers) in integrationEventToHandlers)

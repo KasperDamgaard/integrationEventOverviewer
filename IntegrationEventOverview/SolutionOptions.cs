@@ -2,16 +2,6 @@
 
 public class SolutionOptions
 {
-    public SolutionOptions(string solutionPath)
-    {
-        SolutionPath = solutionPath;
-    }
-
-    public SolutionOptions()
-    {
-        SolutionPath = string.Empty;
-    }
-
     public string SolutionPath { get; set; }
     public string SolutionName
     {
@@ -24,5 +14,19 @@ public class SolutionOptions
             }
             return SolutionPath[(inx + 1)..^".sln".Length];
         }
+    }
+
+    public string? IntegrationEventInterfaceName { get; set; }
+    public string? IntegrationEventHandlerInterfaceName { get; set; }
+    public bool DomainEventOverview { get; set; }
+
+    public SolutionOptions(string solutionPath)
+    {
+        SolutionPath = solutionPath;
+    }
+
+    public SolutionOptions()
+    {
+        SolutionPath = string.Empty;
     }
 };

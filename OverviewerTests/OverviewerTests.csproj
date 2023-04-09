@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\IntegrationEventOverview\IntegrationEventOverview.csproj" />
+        <ProjectReference Include="..\BuildingBlocks\BuildingBlocks.csproj" />
     </ItemGroup>
 
 </Project>
