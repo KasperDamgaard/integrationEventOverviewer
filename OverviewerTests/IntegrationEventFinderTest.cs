@@ -28,11 +28,11 @@ public class IntegrationEventFinderTests : TestBase
         // Arrange
         var options = Options.Create(new SolutionOptions(GetThisSolutionFilePath()));
         var visualizer = new PumlVisualizer(options);
-        var sut = new OverviewComputer(LoggerFactory.CreateLogger<OverviewComputer>(), visualizer, new EventFinder(options), new EventMapper(options), new MockOutputter(), options);
+        var sut = new OverviewComputer(LoggerFactory.CreateLogger<OverviewComputer>(), visualizer, new EventFinder(options), new EventMapper(options), new MockOutputter());
         
         // Act
-        var overview = await sut.CreateIntegrationEventMapping(Projects);
-        var visualization = visualizer.Visualize(overview, false);
+        var overview = await sut.CreateEventMapping(Projects, false);
+        var visualization = visualizer.Visualize(overview, new Dictionary<EventClassInformation, IEnumerable<HandlerClassInformation>>());
         
         // Assert
         visualization.Output.ShouldBe("""
@@ -47,9 +47,9 @@ class IntegrationEventTestImplementor{}
 class IntegrationEventHandler{}
 class IntegrationEventTestImplementor2{}
 class IntegrationEventListener{}
-WrongIntegrationEventTestImplementor <-- WrongIntegrationEventHandler : Handles
-IntegrationEventTestImplementor <-- IntegrationEventHandler : Handles
-IntegrationEventTestImplementor2 <-- IntegrationEventListener : Handles
+OverviewerTests.WrongIntegrationEventTestImplementor <-- WrongIntegrationEventHandler : Handles
+OverviewerTests.IntegrationEventTestImplementor <-- IntegrationEventHandler : Handles
+OverviewerTests.IntegrationEventTestImplementor2 <-- IntegrationEventListener : Handles
 }
 @enduml
 

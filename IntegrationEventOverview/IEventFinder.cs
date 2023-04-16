@@ -2,7 +2,10 @@
 
 namespace IntegrationEventOverview;
 
-public record EventClassInformation(string Name, Namespace Namespace);
+public record EventClassInformation(string Name, Namespace Namespace)
+{
+    public string FullName => $"{Namespace}.{Name}";
+}
 
 public interface IEventFinder
 {

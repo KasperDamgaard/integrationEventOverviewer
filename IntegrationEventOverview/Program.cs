@@ -60,7 +60,6 @@ public class Program
                     o.SolutionPath = options.SolutionPath!;
                     o.IntegrationEventInterfaceName = options.IntegrationEventInterfaceName;
                     o.IntegrationEventHandlerInterfaceName = options.IntegrationEventHandlerInterfaceName;
-                    o.DomainEventOverview = options.DomainEventOverview;
                 });
             })
             .ConfigureLogging((_, logging) => 
@@ -86,6 +85,4 @@ public class CliOptions
     
     [Option('i', "integration-event-name", Required = false, HelpText = "The name of the Integration Event interface class")]
     public string? IntegrationEventInterfaceName { get; set; }
-    [Option('d', "domain-events", Required = false, HelpText = "If set, the output will be the domain events instead of the integration events")]
-    public bool DomainEventOverview { get; set; }
 }

@@ -18,7 +18,6 @@ public class SolutionOptions
 
     public string? IntegrationEventInterfaceName { get; set; }
     public string? IntegrationEventHandlerInterfaceName { get; set; }
-    public bool DomainEventOverview { get; set; }
 
     public SolutionOptions(string solutionPath)
     {

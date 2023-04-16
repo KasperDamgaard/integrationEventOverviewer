@@ -12,37 +12,67 @@ public class PumlVisualizer : IVisualizer
         _solutionOptions = options.Value;
     }
 
-    public VisualizationOutput Visualize(Dictionary<EventClassInformation, IEnumerable<HandlerClassInformation>> integrationEventToHandlers, bool domainEventOverview)
+    public VisualizationOutput Visualize(Dictionary<EventClassInformation, IEnumerable<HandlerClassInformation>> integrationEventToHandlers, Dictionary<EventClassInformation, IEnumerable<HandlerClassInformation>> domainEventToHandlers)
     {
-        var eventText = domainEventOverview ? "Domain" : "Integration";
+        var popularDomainEvents = domainEventToHandlers.Where(x => x.Value.Count() > 2)
+            .ToDictionary(x => x.Key, x => x.Value);
+        var lessPopularDomainEvents = domainEventToHandlers.Where(x => x.Value.Any() && x.Value.Count() < 2)
+            .ToDictionary(x => x.Key, x => x.Value);
+
+        var lonelyDomainEvents = domainEventToHandlers.Where(x => !x.Value.Any())
+            .ToDictionary( x => x.Key, x => x.Value);
+
+        var diagrams = new List<string?>
+        {
+            WriteDiagram(integrationEventToHandlers, $"{_solutionOptions.SolutionName} Integration Event Overview"),
+            WriteDiagram(popularDomainEvents,
+                $"{_solutionOptions.SolutionName} Domain Event Overview: Highly connected (>2)"),
+            WriteDiagram(lessPopularDomainEvents,
+                $"{_solutionOptions.SolutionName} Domain Event Overview: Less connected (1-2)"),
+            WriteDiagram(lonelyDomainEvents, $"{_solutionOptions.SolutionName} Domain Event Overview: Lonely (0)"),
+        };
+        diagrams.RemoveAll(string.IsNullOrEmpty);
         var sb = new StringBuilder();
         sb.AppendLine("@startuml");
+        sb.AppendJoin("newpage" + Environment.NewLine, diagrams);
+        sb.AppendLine("@enduml");
+        return new VisualizationOutput(sb.ToString());
+    }
+
+    private static string? WriteDiagram(Dictionary<EventClassInformation, IEnumerable<HandlerClassInformation>> integrationEventToHandlers, string title)
+    {
+        if (integrationEventToHandlers.Count == 0)
+        {
+            return null;
+        }
+
+        var sb = new StringBuilder();
         sb.AppendLine("!theme spacelab");
         sb.AppendLine("skin rose");
-        sb.AppendLine($"title {_solutionOptions.SolutionName} {eventText} Event Overview");
-        OrganizeByNamespace(integrationEventToHandlers).ToList().ForEach(x =>
+        sb.AppendLine($"title {title}");
+        OrganizeByNamespace(integrationEventToHandlers).ToList().ForEach(classesPerNs =>
         {
-            sb.AppendLine("namespace " + x.Key.Name + "{");
-            x.Value.ToList().ForEach(y =>
+            sb.AppendLine("namespace " + classesPerNs.Key.Name + "{");
+            classesPerNs.Value.ToList().ForEach(classInformation =>
             {
-                sb.AppendLine("class " + y.Name + "{}");
+                sb.AppendLine("class " + classInformation.Name + "{}");
             });
             foreach (var (intEvents, handlers) in integrationEventToHandlers)
             {
                 foreach (var handler in handlers)
                 {
-                    if (handler.Namespace.Name != x.Key.Name)
+                    if (handler.Namespace.Name != classesPerNs.Key.Name)
                     {
                         continue;
                     }
-                    sb.AppendLine(intEvents.Name + " <-- "+handler.Name + " : Handles");
+
+                    sb.AppendLine(intEvents.FullName + " <-- " + handler.Name + " : Handles");
                 }
             }
+
             sb.AppendLine("}");
         });
-
-        sb.AppendLine("@enduml");
-        return new VisualizationOutput(sb.ToString());
+        return sb.ToString();
     }
 
     private static Dictionary<Namespace, IList<ClassInformation>> OrganizeByNamespace(Dictionary<EventClassInformation, IEnumerable<HandlerClassInformation>> integrationEventToHandlers)
