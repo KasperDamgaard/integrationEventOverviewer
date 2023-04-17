@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using BuildingBlocks;
+using MediatR;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Options;
 
@@ -7,10 +8,12 @@ namespace IntegrationEventOverview;
 public class EventMapper : IEventMapper 
 {
     private string IntegrationEventHandlerInterfaceName { get; }
+    private string DomainEventHandlerInterfaceName { get; }
 
     public EventMapper(IOptions<SolutionOptions> solutionOptions)
     {
         IntegrationEventHandlerInterfaceName = solutionOptions.Value.IntegrationEventHandlerInterfaceName ?? nameof(IIntegrationEventListener<IIntegrationEvent>);
+        DomainEventHandlerInterfaceName = solutionOptions.Value.DomainEventHandlerInterfaceName ?? nameof(IDomainEventListener<IDomainEvent>);
     }
 
     public async Task<IEnumerable<HandlerClassInformation>> MapEventToHandlers(EventClassInformation @event, IEnumerable<Project> projects, bool mapDomainEvents)
@@ -24,11 +27,7 @@ public class EventMapper : IEventMapper
                 throw new Exception("Compilation not found");
             }
 
-            var filter = IntegrationVisitorFilter(@event);
-            if (mapDomainEvents)
-            {
-                filter = DomainVisitorFilter(@event); 
-            } 
+            var filter = VisitorFilter(@event, mapDomainEvents ? DomainEventHandlerInterfaceName : IntegrationEventHandlerInterfaceName);
             var classVisitor = new ClassVirtualizationVisitor(compilation, filter);
 
             var handlers = (await classVisitor.LocateInterfaces()).Select(ev =>
@@ -42,7 +41,7 @@ public class EventMapper : IEventMapper
         return integrationEvents;
     }
 
-    private Func<INamedTypeSymbol, bool> IntegrationVisitorFilter(EventClassInformation @event)
+    private Func<INamedTypeSymbol, bool> VisitorFilter(EventClassInformation @event, string interfaceName)
     {
         return symbol =>
         {
@@ -52,20 +51,7 @@ public class EventMapper : IEventMapper
                 return true;
             }
             var match =  symbol.BaseType?.Name == nameof(INotificationHandler<IIntegrationEvent>) && symbol.BaseType?.TypeArguments[0].Name == @event.Name;
-            return match || symbol.BaseType?.Name == IntegrationEventHandlerInterfaceName && symbol.BaseType?.TypeArguments[0].Name == @event.Name;
-        };
-    }
-    
-    private Func<INamedTypeSymbol, bool> DomainVisitorFilter(EventClassInformation @event)
-    {
-        return symbol =>
-        {
-            var implementedInterfaces = symbol.AllInterfaces;
-            if (implementedInterfaces.Any(s => s.Name == nameof(INotificationHandler<IDomainEvent>) && s.TypeArguments[0].Name == @event.Name))
-            {
-                return true;
-            }
-            return symbol.BaseType?.Name == nameof(INotificationHandler<IDomainEvent>) && symbol.BaseType?.TypeArguments[0].Name == @event.Name;
+            return match || symbol.BaseType?.Name == interfaceName && symbol.BaseType?.TypeArguments[0].Name == @event.Name;
         };
     }
 }

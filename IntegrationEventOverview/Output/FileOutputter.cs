@@ -12,7 +12,7 @@ public class FileOutputter : IOverviewOutputter
     public FileOutputter(ILogger<FileOutputter> logger, IOptions<SolutionOptions> options)
     {
         _logger = logger;
-        _filePath = Path.Combine(Directory.GetCurrentDirectory(), options.Value.SolutionName + "-integrationEventMapping.puml");
+        _filePath = Path.Combine(Directory.GetCurrentDirectory(), options.Value.SolutionName + "-eventMapping.puml");
     }
 
     public async Task Output(VisualizationOutput content)

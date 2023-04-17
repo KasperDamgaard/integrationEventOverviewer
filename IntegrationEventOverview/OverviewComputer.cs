@@ -42,17 +42,17 @@ public class OverviewComputer
     {
         var eventText = findDomainEvents ? "Domain" : "Integration";
         _logger.LogInformation("Find all {EventText} Events", eventText);
-        var integrationEvents = (await _eventFinder.FindEvents(projects, findDomainEvents)).ToList();
-        _logger.LogInformation("Found {Count} {EventText} Events. They are: {Events}", integrationEvents.Count, eventText, integrationEvents);
-        var integrationEventToHandlers = new Dictionary<EventClassInformation, IEnumerable<HandlerClassInformation>>();
-        foreach (var integrationEvent in integrationEvents)
+        var events = (await _eventFinder.FindEvents(projects, findDomainEvents)).ToList();
+        _logger.LogInformation("Found {Count} {EventText} Events. They are: {Events}", events.Count, eventText, events);
+        var eventInfoToHandlers = new Dictionary<EventClassInformation, IEnumerable<HandlerClassInformation>>();
+        foreach (var @event in events)
         {
-            _logger.LogInformation("Find all {EventText} Event handler for the {EventText} Event {IntegrationEvent}", eventText, eventText, integrationEvent);
-            var integrationEventHandlers = (await _eventMapper.MapEventToHandlers(integrationEvent, projects, findDomainEvents)).ToList();
-            _logger.LogInformation("Found {Count} {EventText} Event Handlers for the {EventText} Event {IntegrationEvent}", integrationEventHandlers.Count, eventText, eventText, integrationEvent);
-            integrationEventToHandlers.Add(integrationEvent, integrationEventHandlers);
+            _logger.LogInformation("Find all {EventText} Event handler for the {EventText} Event {IntegrationEvent}", eventText, eventText, @event);
+            var eventHandlers = (await _eventMapper.MapEventToHandlers(@event, projects, findDomainEvents)).ToList();
+            _logger.LogInformation("Found {Count} {EventText} Event Handlers for the {EventText} Event {IntegrationEvent}", eventHandlers.Count, eventText, eventText, @event);
+            eventInfoToHandlers.Add(@event, eventHandlers);
         }
 
-        return integrationEventToHandlers;
+        return eventInfoToHandlers;
     }
 }

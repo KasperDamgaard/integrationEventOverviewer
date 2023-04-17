@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using CommandLine;
+﻿using CommandLine;
 using IntegrationEventOverview.Output;
 using IntegrationEventOverview.Visualization;
 using Microsoft.Build.Locator;
@@ -60,6 +58,8 @@ public class Program
                     o.SolutionPath = options.SolutionPath!;
                     o.IntegrationEventInterfaceName = options.IntegrationEventInterfaceName;
                     o.IntegrationEventHandlerInterfaceName = options.IntegrationEventHandlerInterfaceName;
+                    o.DomainEventInterfaceName = options.DomainEventInterfaceName;
+                    o.DomainEventHandlerInterfaceName = options.DomainEventHandlerInterfaceName;
                 });
             })
             .ConfigureLogging((_, logging) => 
@@ -67,8 +67,6 @@ public class Program
                 logging.ClearProviders();
                 logging.AddSimpleConsole(options => options.IncludeScopes = true);
             });
-
-    
 }
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -80,9 +78,13 @@ public class CliOptions
     [Option('t', "output-type", Required = false, Default = "File", HelpText = "The output type (File or Console)")]
     public string OutputType { get; set; } = "File";
     
-    [Option('h', "handler-name", Required = false, HelpText = "The name of the interface which handles the Integration Event")]
+    [Option('h', "integration-handler-name", Required = false, HelpText = "The name of the interface which handles the Integration Event")]
     public string? IntegrationEventHandlerInterfaceName { get; set; }
     
     [Option('i', "integration-event-name", Required = false, HelpText = "The name of the Integration Event interface class")]
     public string? IntegrationEventInterfaceName { get; set; }
+    [Option('d', "domain-event-name", Required = false, HelpText = "The name of the Domain Event interface class")]
+    public string? DomainEventInterfaceName { get; set; }
+    [Option('e', "domain-handler-name", Required = false, HelpText = "The name of the Interface which handles the Domain Event")]
+    public string? DomainEventHandlerInterfaceName { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using BuildingBlocks;
+using MediatR;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Options;
 
@@ -12,7 +13,7 @@ public class EventFinder : IEventFinder
     public EventFinder(IOptions<SolutionOptions> solutionOptions)
     {
         IntegrationEventInterfaceName = solutionOptions.Value.IntegrationEventInterfaceName ?? nameof(IIntegrationEvent);
-        DomainEventInterfaceName = nameof(IDomainEvent);
+        DomainEventInterfaceName = solutionOptions.Value.DomainEventInterfaceName ?? nameof(IDomainEvent);
     }
 
     public async Task<IEnumerable<EventClassInformation>> FindEvents(IEnumerable<Project> projects, bool findDomainEvents)
